@@ -9,14 +9,14 @@ static void print_devs(libusb_device **devs)
 
 	while ((dev = devs[i++]) != NULL) {
 		struct libusb_device_descriptor desc;
-		struct libusb_device_descriptor conf;
+		struct libusb_config_descriptor *conf;
 		int * config;
 		int r = libusb_get_device_descriptor(dev, &desc);
 		if (r < 0) {
 			fprintf(stderr, "failed to get device descriptor");
 			return;
 		}
-		r = libusb_get_device_descriptor(dev, &conf);
+		r = libusb_get_config_descriptor(dev,0 ,&conf);
 		if (r < 0) {
                         fprintf(stderr, "failed to get conf descriptor");
                         return;
@@ -50,6 +50,31 @@ static void print_devs(libusb_device **devs)
 		printf("  bNumConfigurations : %04x\n",desc.bNumConfigurations);
 		
 		printf("  Configuration Descriptor:\n");
+		printf("    bLength %d\n",conf->bLength);
+		printf("    bDescriptorType %d\n",conf->bDescriptorType);
+		printf("    bNumInterfaces %d\n",conf->bNumInterfaces);
+		printf("    bConfigurationValue %d\n",conf->bConfigurationValue);
+		printf("    bmAttributes 0x%x\n",conf->bmAttributes);
+		printf("    MaxPower %dmA\n",conf->MaxPower);
+
+		printf("    Interface Descriptor:\n");
+		printf("      bLength %d\n",conf->interface->altsetting->bLength);
+		printf("      bDescriptorType %d\n",conf->interface->altsetting->bDescriptorType);
+		printf("      bInterfaceNumber %d\n",conf->interface->altsetting->bInterfaceNumber);
+		printf("      bAlternateSetting %d\n",conf->interface->altsetting->bAlternateSetting);
+		printf("      bInterfaceClass %d Hub\n",conf->interface->altsetting->bInterfaceClass);
+		printf("      bInterfaceSubClass %d\n",conf->interface->altsetting->bInterfaceSubClass);
+		printf("      bInterfaceProtocol %d\n",conf->interface->altsetting->bInterfaceProtocol);
+		printf("      iInterface %d\n",conf->interface->altsetting->iInterface);
+
+		printf("	Endpoint Descriptor\n");
+    		printf("bEndpointAddress: %02x\n",conf->interface->altsetting->endpoint->bEndpointAddress);
+    		printf("bmAttributes: %02x\n", conf->interface->altsetting->endpoint->bmAttributes);
+    		printf("wMaxPacketSize: %02x\n", conf->interface->altsetting->endpoint->wMaxPacketSize);
+    		printf("bInterval: %02x\n", conf->interface->altsetting->endpoint->bInterval);
+	    	printf("bRefresh: %02x\n", conf->interface->altsetting->endpoint->bRefresh);
+	    	printf("bSynchAddress: %02x\n", conf->interface->altsetting->endpoint->bSynchAddress);
+	    	printf("\n");
 
 
 		printf("=======================================================\n");
