@@ -66,14 +66,18 @@ static void print_devs(libusb_device **devs)
 		printf("      bInterfaceSubClass %d\n",conf->interface->altsetting->bInterfaceSubClass);
 		printf("      bInterfaceProtocol %d\n",conf->interface->altsetting->bInterfaceProtocol);
 		printf("      iInterface %d\n",conf->interface->altsetting->iInterface);
-
+		if(conf->interface->altsetting->endpoint == NULL)
+		{
+			printf("Endpoint is Null");
+			continue ;
+		}
 		printf("	Endpoint Descriptor\n");
-    		printf("bEndpointAddress: %02x\n",conf->interface->altsetting->endpoint->bEndpointAddress);
-    		printf("bmAttributes: %02x\n", conf->interface->altsetting->endpoint->bmAttributes);
-    		printf("wMaxPacketSize: %02x\n", conf->interface->altsetting->endpoint->wMaxPacketSize);
-    		printf("bInterval: %02x\n", conf->interface->altsetting->endpoint->bInterval);
-	    	printf("bRefresh: %02x\n", conf->interface->altsetting->endpoint->bRefresh);
-	    	printf("bSynchAddress: %02x\n", conf->interface->altsetting->endpoint->bSynchAddress);
+    		printf("        bEndpointAddress: %02x\n",conf->interface->altsetting->endpoint->bEndpointAddress);
+    		printf("        bmAttributes: %02x\n", conf->interface->altsetting->endpoint->bmAttributes);
+    		printf("        wMaxPacketSize: %02x\n", conf->interface->altsetting->endpoint->wMaxPacketSize);
+    		printf("        bInterval: %02x\n", conf->interface->altsetting->endpoint->bInterval);
+	    	printf("        bRefresh: %02x\n", conf->interface->altsetting->endpoint->bRefresh);
+	    	printf("        bSynchAddress: %02x\n", conf->interface->altsetting->endpoint->bSynchAddress);
 	    	printf("\n");
 
 
